@@ -1,71 +1,50 @@
-# LettuceDine
+# Welcome to your Expo app 👋
 
-A Marketplace for Potential Customers and Vendors of Eateries (Food Installments)
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-## Run the app
+## Get started
 
-### uv
+1. Install dependencies
 
-Run as a desktop app:
+   ```bash
+   npm install
+   ```
 
-```bash
-uv run flet run
-```
+2. Start the app
 
-Run as a web app:
+   ```bash
+   npx expo start
+   ```
 
-```bash
-uv run flet run --web
-```
+In the output, you'll find options to open the app in a
 
-For more details on running the app, refer to the [Getting Started Guide](https://flet.dev/docs/).
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-## Build the app
+You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-### Android
+## Get a fresh project
 
-```bash
-flet build apk -v
-```
-
-For more details on building and signing `.apk` or `.aab`, refer to the [Android Packaging Guide](https://flet.dev/docs/publish/android/).
-
-### iOS
+When you're ready, run:
 
 ```bash
-flet build ipa -v
+npm run reset-project
 ```
 
-For more details on building and signing `.ipa`, refer to the [iOS Packaging Guide](https://flet.dev/docs/publish/ios/).
+This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-### macOS
+## Learn more
 
-```bash
-flet build macos -v
-```
+To learn more about developing your project with Expo, look at the following resources:
 
-For more details on building macOS package, refer to the [macOS Packaging Guide](https://flet.dev/docs/publish/macos/).
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-### Linux
+## Join the community
 
-```bash
-flet build linux -v
-```
+Join our community of developers creating universal apps.
 
-For more details on building Linux package, refer to the [Linux Packaging Guide](https://flet.dev/docs/publish/linux/).
-
-### Windows
-
-```bash
-flet build windows -v
-```
-
-For more details on building Windows package, refer to the [Windows Packaging Guide](https://flet.dev/docs/publish/windows/).
-
-### Web
-
-```bash
-flet build web -v
-```
-
-For more details on building Web app, refer to the [Web Packaging Guide](https://flet.dev/docs/publish/web/).
+- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
