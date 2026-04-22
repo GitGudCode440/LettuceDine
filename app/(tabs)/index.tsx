@@ -1,98 +1,86 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { 
+  View, Text, FlatList, ActivityIndicator, StyleSheet, Platform 
+} from 'react-native';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+const RestaurantList = () => {
+  const [restaurants, setRestaurants] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  // Determine the correct localhost IP based on the platform
+  const API_URL = Platform.OS === 'android' 
+    ? 'http://10.0.2.2:3000/restaurants' 
+    : 'http://localhost:3000/restaurants';
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  const fetchRestaurants = async () => {
+    try {
+      const response = await fetch(API_URL);
+      const json = await response.json();
+      setRestaurants(json);
+    } catch (error) {
+      console.error("Connection failed. Check your IP/Server!", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRestaurants();
+  }, []);
+
+  const renderRestaurant = ({ item  }) => (
+    <View style={styles.card}>
+      <View style={styles.info}>
+        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.cuisine}>{item.cuisine}</Text>
+      </View>
+      <View style={styles.badge}>
+        <Text style={styles.coordText}>
+          {/* Accessing GeoJSON coordinates from PostGIS */}
+          {item.coords.coordinates[1].toFixed(3)}, {item.coords.coordinates[0].toFixed(3)}
+        </Text>
+      </View>
+    </View>
   );
-}
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Nearby Eats</Text>
+      {loading ? (
+        <ActivityIndicator size="large" color="#FF6347" />
+      ) : (
+        <FlatList
+          data={restaurants}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderRestaurant}
+          contentContainerStyle={styles.listContent}
+        />
+      )}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: { flex: 1, backgroundColor: '#f8f8f8', paddingTop: 50 },
+  header: { fontSize: 28, fontWeight: 'bold', marginLeft: 20, marginBottom: 20 },
+  listContent: { paddingHorizontal: 20 },
+  card: {
+    backgroundColor: '#fff',
+    padding: 15,
+    borderRadius: 12,
+    marginBottom: 15,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 8,
+    elevation: 3, // Android shadow
+    shadowColor: '#000', // iOS shadow
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  name: { fontSize: 18, fontWeight: '600' },
+  cuisine: { color: '#666', marginTop: 4 },
+  badge: { backgroundColor: '#eee', padding: 6, borderRadius: 6 },
+  coordText: { fontSize: 10, color: '#888', fontFamily: 'monospace' }
 });
+
+export default RestaurantList;
