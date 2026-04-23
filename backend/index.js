@@ -13,9 +13,10 @@ const pool = new Pool({
 app.get('/restaurants', async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT id, name, ST_AsGeoJSON(location)::json AS coords 
+      SELECT id, name, cuisine, ST_AsGeoJSON(location)::json AS coords 
       FROM restaurants;
     `);
+    console.log(result.rows)
     res.json(result.rows);
   } catch (err) {
     console.error(err);

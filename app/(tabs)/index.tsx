@@ -3,13 +3,18 @@ import {
   View, Text, FlatList, ActivityIndicator, StyleSheet, Platform 
 } from 'react-native';
 
+import Constants from 'expo-constants'
+
+const debuggerHost = Constants.expoConfig?.hostUri?.split(":").shift()
+const ANDROID_URL = `http://${debuggerHost}:3000/restaurants`
+
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Determine the correct localhost IP based on the platform
   const API_URL = Platform.OS === 'android' 
-    ? 'http://10.0.2.2:3000/restaurants' 
+    ? ANDROID_URL
     : 'http://localhost:3000/restaurants';
 
   const fetchRestaurants = async () => {
@@ -26,11 +31,11 @@ const RestaurantList = () => {
 
   useEffect(() => {
     fetchRestaurants();
-  }, []);
+  });
 
-  const renderRestaurant = ({ item  }) => (
+  const renderRestaurant = ({ item }) => (
     <View style={styles.card}>
-      <View style={styles.info}>
+      <View>
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.cuisine}>{item.cuisine}</Text>
       </View>
