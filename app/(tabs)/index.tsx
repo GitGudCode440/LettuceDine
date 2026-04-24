@@ -36,14 +36,16 @@ const RestaurantList = () => {
   const renderRestaurant = ({ item }) => (
     <View style={styles.card}>
       <View>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.cuisine}>{item.cuisine}</Text>
-      </View>
-      <View style={styles.badge}>
-        <Text style={styles.coordText}>
-          {/* Accessing GeoJSON coordinates from PostGIS */}
-          {item.coords.coordinates[1].toFixed(3)}, {item.coords.coordinates[0].toFixed(3)}
-        </Text>
+        <View>
+          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.cuisine}>{item.cuisine}</Text>
+        </View>
+        <View style={styles.badge}>
+          <Text style={styles.coordText}>
+            {/* Accessing GeoJSON coordinates from PostGIS */}
+            {item.coords.coordinates[1].toFixed(3)}, {item.coords.coordinates[0].toFixed(3)}
+          </Text>
+        </View>
       </View>
     </View>
   );
